@@ -1,0 +1,12 @@
+<div class="p-6 max-w-3xl mx-auto">
+  @if (course) {
+    <h1 class="text-3xl font-bold mb-4">{{ course.title }}</h1>
+    <p class="mb-2"><strong>Instructor:</strong> {{ course.instructor }}</p>
+    <p class="mb-2"><strong>Price:</strong> {{ course.price | currency: '$': 'symbol':'1.2-2' }}</p>
+    <p class="mb-4"><strong>Seats available:</strong> {{ course.seats }}</p>
+    <img [src]="course.image" [alt]="course.title" class="w-full max-h-96 object-cover rounded-md border" />
+  } @else {
+    <p class="text-center text-red-600 text-xl">Course not found.</p>
+  }
+</div>
+

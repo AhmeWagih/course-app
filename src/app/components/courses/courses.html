@@ -1,18 +1,25 @@
 <div class="p-5 max-w-7xl mx-auto flex flex-col gap-4">
-  <h1 class="text-center text-gray-800 mb-8 text-4xl font-bold">Available Courses</h1>
 
-  <div class="flex flex-wrap items-center gap-4 ">
-    <label for="categorySelect" class="text-sm font-medium text-gray-700">Category</label>
-    <select
-      id="categorySelect"
-      [(ngModel)]="selectedCategoryId"
-      (ngModelChange)="filterCoursesFun()"
-      class="border w-72 border-gray-300 rounded-lg px-4 py-2 text-base min-w-[180px] focus:outline-none focus:ring-2 focus:ring-blue-500"
-    >
-      @for (cat of categories; track cat.id) {
-        <option [ngValue]="cat.id">{{ cat.name }}</option>
-      }
-    </select>
+  <div class="flex flex-wrap items-center justify-between gap-4">
+    <div class="flex items-center gap-3">
+      <label for="categorySelect" class="text-sm font-medium text-gray-700">Category</label>
+      <select
+        id="categorySelect"
+        [(ngModel)]="selectedCategoryId"
+        (ngModelChange)="filterCoursesFun()"
+        class="border w-72 border-gray-300 rounded-lg px-4 py-2 text-base min-w-45 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      >
+        @for (cat of categories; track cat.id) {
+          <option [ngValue]="cat.id">{{ cat.name }}</option>
+        }
+      </select>
+    </div>
+    <h3 class="text-sm md:text-base font-semibold text-gray-800">
+      Total order price:
+      <span class="text-blue-600">
+        {{ totalOrderPrice | currency: '$': 'symbol':'1.2-2' }}
+      </span>
+    </h3>
   </div>
 
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 py-5">
@@ -76,6 +83,14 @@
             (click)="register(course.id)"
           >
             Register
+          </button>
+          <button
+            type="button"
+            class="mt-2 w-full rounded-md px-4 py-2 font-medium text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white transition-colors"
+            [routerLink]="['/course', course.id]"
+            routerLinkActive="bg-blue-700 text-white"
+          >
+            Details
           </button>
         </div>
       </div>

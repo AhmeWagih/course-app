@@ -1,9 +1,6 @@
-<h3 class="my-5 text-center">
-  Total order price is : {{ orderPrice | currency: '$': 'symbol':'1.2-2' }}
-</h3>
-
 <app-courses
   [sentSelectedCatId]="selectedCatId"
+  [totalOrderPrice]="orderPrice"
   (onTotalOrderPriceChanged)="setOrderPrice($event)"
 ></app-courses>
 
