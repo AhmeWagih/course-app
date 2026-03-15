@@ -1,79 +1,52 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { ICourse } from '../models/ICourses';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Courses {
-  private readonly courses: ICourse[] = [
-    {
-      id: 1,
-      title: 'Angular Complete Guide',
-      instructor: 'John Smith',
-      price: 299,
-      seats: 0,
-      image: 'https://picsum.photos/600/400?1',
-      categoryId: 1,
-    },
-    {
-      id: 2,
-      title: 'React Fundamentals',
-      instructor: 'Sarah Johnson',
-      price: 249,
-      seats: 1,
-      image: 'https://picsum.photos/600/400?2',
-      categoryId: 1,
-    },
-    {
-      id: 3,
-      title: 'Python for Data Analysis',
-      instructor: 'Michael Chen',
-      price: 349,
-      seats: 20,
-      image: 'https://picsum.photos/600/400?3',
-      categoryId: 2,
-    },
-    {
-      id: 4,
-      title: 'Machine Learning Basics',
-      instructor: 'Emily Davis',
-      price: 399,
-      seats: 15,
-      image: 'https://picsum.photos/600/400?4',
-      categoryId: 2,
-    },
-    {
-      id: 5,
-      title: 'iOS Development with Swift',
-      instructor: 'David Wilson',
-      price: 329,
-      seats: 18,
-      image: 'https://picsum.photos/600/400?5',
-      categoryId: 3,
-    },
-    {
-      id: 6,
-      title: 'Android App Development',
-      instructor: 'Lisa Anderson',
-      price: 319,
-      seats: 22,
-      image: 'https://picsum.photos/600/400?6',
-      categoryId: 3,
-    },
-  ];
+  private readonly baseUrl = `${environment.apiBaseUrl}/courses`;
 
-  getAllCourses(): ICourse[] {
-    return this.courses;
+  constructor(private http: HttpClient) {}
+
+  /** Returns all courses from the MockAPI backend. */
+  getAllCourses(): Observable<ICourse[]> {
+    return this.http.get<ICourse[]>(this.baseUrl);
   }
 
-  getCoursesByCatID(catID: number): ICourse[] {
+  /** Returns courses that belong to the given category id. */
+  getCoursesByCatID(catID: number): Observable<ICourse[]> {
     if (catID === 0) {
-      return this.courses;
+      return this.getAllCourses();
     }
-    return this.courses.filter((c) => c.categoryId === catID);
+    const url = `${this.baseUrl}?categoryId=${catID}`;
+    return this.http.get<ICourse[]>(url);
   }
 
-  getCourseByID(courseID: number): ICourse | undefined {
-    return this.courses.find((c) => c.id === courseID);
+  /** Returns a single course by its id. */
+  getCourseByID(courseID: number): Observable<ICourse> {
+    const url = `${this.baseUrl}/${courseID}`;
+    return this.http.get<ICourse>(url);
+  }
+
+  /** Adds a new course; MockAPI returns the inserted course. */
+  addCourse(course: ICourse): Observable<ICourse> {
+    return this.http.post<ICourse>(this.baseUrl, course);
+  }
+
+  /** Updates an existing course. */
+  updateCourse(courseID: number, course: ICourse): Observable<ICourse> {
+    const url = `${this.baseUrl}/${courseID}`;
+    return this.http.put<ICourse>(url, course);
+  }
+
+  /** Deletes a course by id. */
+  deleteCourse(courseID: number): Observable<void> {
+    const url = `${this.baseUrl}/${courseID}`;
+    return this.http.delete<void>(url);
   }
 }
+

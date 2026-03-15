@@ -92,6 +92,21 @@
           >
             Details
           </button>
+          <button
+            type="button"
+            class="mt-2 w-full rounded-md px-4 py-2 font-medium text-amber-700 border border-amber-700 hover:bg-amber-700 hover:text-white transition-colors"
+            [routerLink]="['/insertcourse', course.id]"
+            routerLinkActive="bg-amber-700 text-white"
+          >
+            Edit
+          </button>
+          <button
+            type="button"
+            class="mt-2 w-full rounded-md px-4 py-2 font-medium text-red-700 border border-red-700 hover:bg-red-700 hover:text-white transition-colors"
+            (click)="onDelete(course.id)"
+          >
+            Delete
+          </button>
         </div>
       </div>
     } @empty {
